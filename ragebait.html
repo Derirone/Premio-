@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎉 ¡FELICITACIONES! Has sido seleccionada</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a0533 0%, #3d0070 50%, #1a0533 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Confetti */
+    .confetti-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Stars background */
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0%   { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      z-index: 10;
+      background: white;
+      border-radius: 24px;
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 0 60px rgba(180, 0, 255, 0.6), 0 0 120px rgba(180, 0, 255, 0.2);
+      text-align: center;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      0%   { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff6b00, #ffcc00);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      animation: pulseBadge 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseBadge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 150, 0, 0.5); }
+      50%       { box-shadow: 0 0 0 8px rgba(255, 150, 0, 0); }
+    }
+
+    .emoji-big {
+      font-size: 64px;
+      display: block;
+      margin-bottom: 8px;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 900;
+      color: #1a0533;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+
+    h1 span { color: #9b00ff; }
+
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .prize-box {
+      background: linear-gradient(135deg, #f3e8ff, #ffe8f3);
+      border: 2px dashed #9b00ff;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .prize-box .prize-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: #3d0070;
+      margin-bottom: 4px;
+    }
+
+    .prize-box .prize-value {
+      font-size: 13px;
+      color: #9b00ff;
+      font-weight: 600;
+    }
+
+    .timer-label {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 6px;
+    }
+
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .time-unit {
+      background: #1a0533;
+      color: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      min-width: 56px;
+    }
+
+    .time-unit .num {
+      font-size: 24px;
+      font-weight: 900;
+      display: block;
+    }
+
+    .time-unit .lbl {
+      font-size: 10px;
+      color: #ccc;
+      text-transform: uppercase;
+    }
+
+    .btn-next {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #9b00ff, #ff00cc);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 6px 24px rgba(155, 0, 255, 0.5);
+      animation: glowBtn 2s ease-in-out infinite;
+    }
+
+    @keyframes glowBtn {
+      0%, 100% { box-shadow: 0 6px 24px rgba(155, 0, 255, 0.5); }
+      50%       { box-shadow: 0 6px 40px rgba(255, 0, 204, 0.8); }
+    }
+
+    .btn-next:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-next:active {
+      transform: scale(0.97);
+    }
+
+    .security-note {
+      margin-top: 16px;
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .security-note img {
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    /* Screens */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* Progress dots */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ddd;
+      transition: background 0.3s;
+    }
+
+    .dot.filled { background: #9b00ff; }
+
+    /* Form styles */
+    .form-group {
+      text-align: left;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      border-color: #9b00ff;
+    }
+
+    /* Loading */
+    .loading-bar-bg {
+      background: #f0f0f0;
+      border-radius: 20px;
+      height: 12px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .loading-bar {
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #9b00ff, #ff00cc);
+      width: 0%;
+      transition: width 0.15s linear;
+    }
+
+    .loading-text {
+      font-size: 13px;
+      color: #666;
+      height: 20px;
+    }
+
+    /* Verification ticks */
+    .check-list {
+      text-align: left;
+      margin: 16px 0;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #444;
+      padding: 6px 0;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.4s ease;
+    }
+
+    .check-item.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .check-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #00c853;
+      color: white;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Final ragebait screen */
+    #screen5 {
+      text-align: center;
+    }
+
+    .troll-emoji {
+      font-size: 80px;
+      display: block;
+      animation: spinZoom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes spinZoom {
+      0%   { transform: scale(0) rotate(-180deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .rage-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #ff2200;
+      margin: 12px 0 8px;
+      animation: shakeTitle 0.5s ease 0.3s both;
+    }
+
+    @keyframes shakeTitle {
+      0%, 100% { transform: translateX(0); }
+      20%       { transform: translateX(-8px); }
+      40%       { transform: translateX(8px); }
+      60%       { transform: translateX(-6px); }
+      80%       { transform: translateX(6px); }
+    }
+
+    .rage-sub {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    .rage-gif-box {
+      background: #fff3f0;
+      border: 2px solid #ff2200;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .rage-gif-box p {
+      font-size: 14px;
+      color: #cc0000;
+      font-weight: 600;
+    }
+
+    .btn-restart {
+      background: linear-gradient(135deg, #ff2200, #ff6600);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 32px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255, 34, 0, 0.4);
+      transition: transform 0.15s;
+    }
+
+    .btn-restart:hover { transform: scale(1.05); }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .card { padding: 28px 20px; }
+      h1 { font-size: 21px; }
+      .time-unit .num { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Confetti -->
+  <div class="confetti-container" id="confetti"></div>
+
+  <div class="card">
+
+    <!-- PANTALLA 1: Premio anunciado -->
+    <div class="screen active" id="screen1">
+      <div class="dots">
+        <div class="dot filled"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="badge">✨ Ganadora confirmada</div>
+      <span class="emoji-big">🎁</span>
+      <h1>¡Felicidades! Has sido <span>seleccionada</span></h1>
+      <p class="subtitle">Entre 48,291 participantes, TÚ eres la ganadora del gran premio de hoy.</p>
+
+      <div class="prize-box">
+        <div class="prize-name">💻 MacBook Pro + AirPods Max</div>
+        <div class="prize-value">Valor total: $3,499 USD — tuyo GRATIS</div>
+      </div>
+
+      <p class="timer-label">⏰ Tu premio expira en:</p>
+      <div class="timer">
+        <div class="time-unit"><span class="num" id="t-min">09</span><span class="lbl">min</span></div>
+        <div class="time-unit"><span class="num" id="t-sec">59</span><span class="lbl">seg</span></div>
+      </div>
+
+      <button class="btn-next" onclick="goTo(2)">¡RECLAMAR MI PREMIO! 🎉</button>
+      <p class="security-note">🔒 100% seguro · Sin tarjeta de crédito · Solo paga envío</p>
+    </div>
+
+    <!-- PANTALLA 2: Datos personales -->
+    <div class="screen" id="screen2">
+      <div class="dots">
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <span class="emoji-big">📋</span>
+      <h1>Paso 1: <span>Confirma tus datos</span></h1>
+      <p class="subtitle">Necesitamos verificar tu identidad para enviarte el premio.</p>
+
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Tu nombre" />
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="tu@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" placeholder="+52 55 1234 5678" />
+      </div>
+      <div class="form-group">
+        <label>País de residencia</label>
+        <select>
+          <option>México</option>
+          <option>Colombia</option>
+          <option>Argentina</option>
+          <option>España</option>
+          <option>Chile</option>
+          <option>Otro</option>
+        </select>
+      </div>
+
+      <button class="btn-next" onclick="goTo(3)">Continuar →</button>
+    </div>
+
+    <!-- PANTALLA 3: Verificando -->
+    <div class="screen" id="screen3">
+      <div class="dots">
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <span class="emoji-big">🔍</span>
+      <h1>Verificando tu <span>cuenta</span>...</h1>
+      <p class="subtitle">Estamos confirmando tu participación. Por favor espera.</p>
+
+      <div class="loading-bar-bg">
+        <div class="loading-bar" id="loadBar"></div>
+      </div>
+      <p class="loading-text" id="loadTxt">Iniciando verificación...</p>
+
+      <div class="check-list" id="checkList">
+        <div class="check-item" id="c1"><div class="check-icon">✓</div> Identidad verificada</div>
+        <div class="check-item" id="c2"><div class="check-icon">✓</div> Participación confirmada</div>
+        <div class="check-item" id="c3"><div class="check-icon">✓</div> Premio disponible</div>
+        <div class="check-item" id="c4"><div class="check-icon">✓</div> Dirección de envío válida</div>
+      </div>
+
+      <button class="btn-next" id="btnVer" style="display:none" onclick="goTo(4)">Ver mi premio 🎁</button>
+    </div>
+
+    <!-- PANTALLA 4: Dirección envío -->
+    <div class="screen" id="screen4">
+      <div class="dots">
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot"></div>
+      </div>
+      <span class="emoji-big">📦</span>
+      <h1>¡Ya casi! <span>Dirección de envío</span></h1>
+      <p class="subtitle">Ingresa dónde quieres recibir tu MacBook Pro y AirPods Max.</p>
+
+      <div class="form-group">
+        <label>Calle y número</label>
+        <input type="text" placeholder="Av. Siempre Viva 123" />
+      </div>
+      <div class="form-group">
+        <label>Ciudad</label>
+        <input type="text" placeholder="Ciudad de México" />
+      </div>
+      <div class="form-group">
+        <label>Código postal</label>
+        <input type="text" placeholder="06600" />
+      </div>
+      <div class="form-group">
+        <label>Estado / Provincia</label>
+        <input type="text" placeholder="CDMX" />
+      </div>
+
+      <button class="btn-next" onclick="goTo(5)">¡Confirmar y recibir premio! 🚀</button>
+      <p class="security-note">📦 Envío express gratis a todo el país</p>
+    </div>
+
+    <!-- PANTALLA 5: RAGEBAIT FINAL 😈 -->
+    <div class="screen" id="screen5">
+      <div class="dots">
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+        <div class="dot filled"></div>
+      </div>
+      <span class="troll-emoji">😂</span>
+      <h1 class="rage-title">¡JAJAJAJAJAJA!</h1>
+      <p class="rage-sub">No hay ningún MacBook.<br>No hay AirPods. No hay NADA. 💀</p>
+
+      <div class="rage-gif-box">
+        <p style="font-size:40px; margin-bottom:8px;">🤡🤡🤡</p>
+        <p>Te acabo de mandar 4 pantallas de formulario FALSO.</p>
+        <p style="margin-top:8px; color: #333; font-weight: 400;">Pusiste tu nombre, correo, teléfono y hasta tu direcció</p>
+      </div>
+
+      <p style="font-size: 28px; margin-bottom: 8px;">🫵😭</p>
+      <p style="font-size: 13px; color: #888; margin-bottom: 20px;">
+        Con todo el cariño del mundo:<br>
+        <strong style="color:#9b00ff; font-size: 16px;">la cabra, el goat 😈</strong>
+      </p>
+
+      <button class="btn-restart" onclick="goTo(1)">Hacer que caiga de nuevo 🔁</button>
+    </div>
+
+  </div>
+
+  <script>
+    // ---- Stars ----
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 3 + 1;
+      s.style.cssText = `
+        width: ${size}px; height: ${size}px;
+        top: ${Math.random()*100}%; left: ${Math.random()*100}%;
+        animation-delay: ${Math.random()*3}s;
+        animation-duration: ${1.5 + Math.random()*2}s;
+      `;
+      starsEl.appendChild(s);
+    }
+
+    // ---- Confetti ----
+    const colors = ['#ff6b00','#ffcc00','#9b00ff','#ff00cc','#00e5ff','#00ff99'];
+    const confEl = document.getElementById('confetti');
+    for (let i = 0; i < 60; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      const shape = Math.random() > 0.5 ? '50%' : '0';
+      c.style.cssText = `
+        background: ${colors[Math.floor(Math.random()*colors.length)]};
+        left: ${Math.random()*100}%;
+        width: ${6 + Math.random()*8}px;
+        height: ${6 + Math.random()*8}px;
+        border-radius: ${shape};
+        animation-duration: ${3 + Math.random()*4}s;
+        animation-delay: ${Math.random()*5}s;
+      `;
+      confEl.appendChild(c);
+    }
+
+    // ---- Timer countdown ----
+    let totalSec = 9 * 60 + 59;
+    function tickTimer() {
+      if (totalSec <= 0) return;
+      totalSec--;
+      const m = String(Math.floor(totalSec / 60)).padStart(2, '0');
+      const s = String(totalSec % 60).padStart(2, '0');
+      document.getElementById('t-min').textContent = m;
+      document.getElementById('t-sec').textContent = s;
+    }
+    setInterval(tickTimer, 1000);
+
+    // ---- Screen navigation ----
+    function goTo(n) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('screen' + n).classList.add('active');
+      if (n === 3) startVerification();
+    }
+
+    // ---- Verification animation ----
+    function startVerification() {
+      const bar  = document.getElementById('loadBar');
+      const txt  = document.getElementById('loadTxt');
+      const btn  = document.getElementById('btnVer');
+      const msgs = [
+        'Iniciando verificación...',
+        'Validando número de participante...',
+        'Comprobando elegibilidad...',
+        'Confirmando disponibilidad del premio...',
+        '¡Verificación completada! ✅',
+      ];
+      const checks = ['c1','c2','c3','c4'];
+
+      let pct = 0;
+      let msgIdx = 0;
+      // reset
+      bar.style.width = '0%';
+      document.getElementById('btnVer').style.display = 'none';
+      checks.forEach(id => document.getElementById(id).classList.remove('show'));
+
+      const iv = setInterval(() => {
+        pct += 1.4;
+        bar.style.width = Math.min(pct, 100) + '%';
+
+        const mIdx = Math.floor((pct / 100) * (msgs.length - 1));
+        if (mIdx !== msgIdx) {
+          msgIdx = mIdx;
+          txt.textContent = msgs[msgIdx];
+        }
+
+        // Show checks progressively
+        if (pct >= 25)  document.getElementById('c1').classList.add('show');
+        if (pct >= 50)  document.getElementById('c2').classList.add('show');
+        if (pct >= 75)  document.getElementById('c3').classList.add('show');
+        if (pct >= 90)  document.getElementById('c4').classList.add('show');
+
+        if (pct >= 100) {
+          clearInterval(iv);
+          txt.textContent = msgs[msgs.length - 1];
+          btn.style.display = 'block';
+        }
+      }, 40);
+    }
+  </script>
+
+</body>
+</html>
